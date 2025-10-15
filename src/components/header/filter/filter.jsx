@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useData } from '../../providers';
 
 import { CustomSelect } from './custom-select';
@@ -28,7 +28,7 @@ export function Filter() {
   const [nameValue, setNameValue] = useState('');
   const [typeValue, setTypeValue] = useState('');
 
-  const applyFilters = async () => {
+  const applyFilters = useCallback(async () => {
     const URLWithPage = new URL(apiURL);
     constructToURL(URLWithPage, 'status', statusValue);
     constructToURL(URLWithPage, 'gender', genderValue);
@@ -39,9 +39,18 @@ export function Filter() {
     setApiURL(URLWithPage);
 
     return await fetchData(URLWithPage);
-  };
+  }, [
+    apiURL,
+    fetchData,
+    genderValue,
+    nameValue,
+    setApiURL,
+    speciesValue,
+    statusValue,
+    typeValue
+  ]);
 
-  const resetFilters = async () => {
+  const resetFilters = useCallback(async () => {
     setStatusValue('');
     setGenderValue('');
     setSpeciesValue('');
@@ -49,7 +58,7 @@ export function Filter() {
     setTypeValue('');
 
     return await resetFetchData();
-  };
+  }, [resetFetchData]);
 
   useEffect(() => {
     const apiPageSearchParam = new URL(apiURL).searchParams;
@@ -59,7 +68,8 @@ export function Filter() {
     setSpeciesValue(apiPageSearchParam.get('species'));
     setNameValue(apiPageSearchParam.get('name'));
     setTypeValue(apiPageSearchParam.get('type'));
-  }, [apiURL]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <S.Filter>
