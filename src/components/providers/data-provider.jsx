@@ -7,7 +7,7 @@ import {
 } from 'react';
 import axios from 'axios';
 
-const API_URL = 'https://rickandmortyapi.com/api/character/';
+export const CHARACTERS_API_URL = 'https://rickandmortyapi.com/api/character/';
 
 export function DataProvider({ children }) {
   const [activePage, setActivePage] = useState(0);
@@ -15,7 +15,7 @@ export function DataProvider({ children }) {
   const [isFetching, setIsFetching] = useState(false);
   const [isError, setIsError] = useState(false);
   const [info, setInfo] = useState({});
-  const [apiURL, setApiURL] = useState(API_URL);
+  const [apiURL, setApiURL] = useState(CHARACTERS_API_URL);
 
   const fetchData = useCallback(async (url) => {
     setIsFetching(true);
@@ -39,6 +39,18 @@ export function DataProvider({ children }) {
     fetchData(apiURL);
   }, [apiURL, fetchData]);
 
+  useEffect(() => {
+    const apiPageSearchParam = +new URL(apiURL).searchParams.get('page');
+    setActivePage(apiPageSearchParam);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const resetFetchData = useCallback(async () => {
+    setActivePage(0);
+    fetchData(CHARACTERS_API_URL);
+    setApiURL(CHARACTERS_API_URL);
+  }, [fetchData]);
+
   const dataValue = {
     activePage,
     setActivePage,
@@ -48,7 +60,8 @@ export function DataProvider({ children }) {
     fetchData,
     isFetching,
     isError,
-    info
+    info,
+    resetFetchData
   };
 
   return (

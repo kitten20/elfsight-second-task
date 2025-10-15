@@ -4,8 +4,13 @@ export const HeaderContainer = styled.div`
   width: 100%;
 
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+
+  @media (max-width: 1280px) {
+    flex-direction: column;
+    gap: 30px;
+  }
 `;
 
 export const StyledLogo = styled.img`
