@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Loader, Text } from './common';
 import { useData } from './providers';
 
-export function AppState() {
+export function AppState({ children }) {
   const { isFetching, isError } = useData();
 
   if (isError) {
@@ -21,7 +21,7 @@ export function AppState() {
     );
   }
 
-  return null;
+  return children;
 }
 
 const AppStateContainer = styled.div`

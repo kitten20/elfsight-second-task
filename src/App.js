@@ -1,22 +1,16 @@
 import styled from 'styled-components';
-import { Pagination, ItemsGrid, useData, Header, AppState } from './components';
+import { Pagination, ItemsGrid, Header, AppState } from './components';
 
-export default function App() {
-  const { isFetching, isError } = useData();
-
+export function App() {
   return (
     <Main>
       <Header />
 
-      <AppState />
+      <AppState>
+        <ItemsGrid />
 
-      {!isFetching && !isError && (
-        <>
-          <ItemsGrid />
-
-          <Pagination />
-        </>
-      )}
+        <Pagination />
+      </AppState>
     </Main>
   );
 }
